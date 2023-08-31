@@ -2,7 +2,6 @@ import {useState} from "react"
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 
-
 function LoginFrom() {
   const[username,setUsername]=useState<string>("")
   const[password,setpassword]=useState<string>("")
@@ -10,9 +9,6 @@ function LoginFrom() {
   const [open, setOpen] = useState<boolean>(false);
   const[message,setMessage] =useState<string>("")
   const[displayName,setDisplayName]= useState<string>("")
-
-
-
 
   interface LoginFormApi{
     message?:string,
@@ -28,24 +24,18 @@ function LoginFrom() {
     })
 
     const data: LoginFormApi =await resp.json()
-    console.log(data);
-
-
     if(data.success === true){
-    
-      setOpen(false)
+     setOpen(false)
       setMessage("")
     }else{
       setMessage("User already exist")
-    }
-  }
- 
+    } }
+
   const handleLogin =async()=>{
     const resp= await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/login",{
       method:"POST",
       headers:{"Content-Type": "application/json"},
       body:JSON.stringify({username,password})
-      
     })
     const data:LoginFormApi = await resp.json()
     console.log(data);
@@ -53,18 +43,12 @@ function LoginFrom() {
       setOpen(false)
       setMessage("")
       setDisplayName(`Hi,${username}`)
-
-
-    }
-    else{
+      if (!data.token) return 
+      setToken(data.token)
+    } else{
       setMessage("Password or username not valid")
-    }
-    
-
-  }
-
-
-
+    }} 
+     
   return (
 
     <div>
