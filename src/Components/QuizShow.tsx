@@ -1,12 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzNjh5MmZpeWxuIn0.Yk2H02NbIBK4P1Yl0zFtwA';
 
+
+
 import {BsChevronDown} from "react-icons/bs"
-import { log } from 'console';
 
 interface Question {
   question: string;
@@ -32,32 +31,47 @@ interface QuizShowProps {
 function QuizShow(props:QuizShowProps) {
   const mapContainer = useRef(null);
 const mapRef = useRef<MapGl | null>(null);
-const [lng, setLng] = useState<number>(50);
-const [lat, setLat] = useState<number>(42.35);
+const [lng, setLng] = useState<number>(10);
+const [lat, setLat] = useState<number>(20);
 const [zoom, setZoom] = useState<number>(9);
+
+
 async function geoLocation(){
 
   return new Promise((resolve,reject)=>{
     navigator.geolocation.getCurrentPosition(
       position => resolve(position),
       error => reject(error)
-    );
-    
-  })
-  
-  
+      )})}
 
-}
+      useEffect(() => {
+        const fetchData = async () => {
+            const { coords }: any = await geoLocation();
+            setLat(coords?.latitude);
+            setLng(coords?.longitude);
+         
+        };
+      
+        fetchData();
+      }, []);
+      
+      
+
+
+   
+
+
+  
 
 
  
 
-  const handleMapShow = async()=>{
-    const {coords}:any = await geoLocation()
-    console.log(coords);
+  const handleMapShow = async ()=>{
     
-    setLng(coords.longitude)
-    setLat(coords.latitude)
+
+
+
+    
     if( mapRef.current || !mapContainer.current ) return
   
     mapRef.current = new MapGl({

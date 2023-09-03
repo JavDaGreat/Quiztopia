@@ -4,3 +4,8 @@
 .map-container {
 	height: 300px;
 }
+.customModal {
+  
+  max-width: 500px;
+  width: 80%;
+}
