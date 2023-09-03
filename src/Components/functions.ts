@@ -42,9 +42,8 @@ const handleSignUp = async(username:string,password:string,setOpen,setMessage)=>
       setMessage("Password or username not valid")
     }} 
 
-    const handleCreateQuiz = async (token:string,quizName:string)=>{
-      console.log(quizName);
-      console.log(token);
+    const handleCreateQuiz = async (token:string,quizName:string,setCheckQuiz)=>{
+      
       
       
 
@@ -59,7 +58,9 @@ const handleSignUp = async(username:string,password:string,setOpen,setMessage)=>
 
       )
       const data:ApiResponse =await resp.json()
-      console.log(data);
+      if(!data.success){
+        setCheckQuiz(true)
+      }
       
 
 

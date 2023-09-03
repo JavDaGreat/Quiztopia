@@ -28,7 +28,7 @@ interface QuizShowProps {
 
 
 
-function QuizShow(props:QuizShowProps) {
+function QuizShow({name,username,questions}:QuizShowProps) {
   const mapContainer = useRef(null);
 const mapRef = useRef<MapGl | null>(null);
 const [lng, setLng] = useState<number>(10);
@@ -92,6 +92,11 @@ async function geoLocation(){
       setLng(Number(position.lng.toFixed(4)))
       setZoom(map.getZoom());
     })
+    const marker= new mapboxgl.Marker().setLngLat([ApiLat,ApiLng]).addTo(map).setPopup(
+      new mapboxgl.Popup({ offset: 10 }) // add popups
+        .setHTML(
+          `<h2>${question} </h2><p>${answer}</p>`
+        ))
 
     
   }
@@ -105,7 +110,7 @@ async function geoLocation(){
 
 
 
-  const content=props.questions.map((question)=>{
+  const content=questions.map((question)=>{
     return <div>
       <p className='hover:cursor-pointer' onClick={handleMapShow}>{question.question}</p>
     </div>
@@ -118,7 +123,7 @@ async function geoLocation(){
 
   return (
     <details className='p-4   bg-gray-200 max-w-lg mx-auto my-4'>
-      <summary className='flex justify-between'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{props.name}</span> <span> By&nbsp;:&nbsp;{props.username} </span>  </summary>
+      <summary className='flex justify-between'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>  </summary>
       {content}
       <div ref={mapContainer} className="map-container" />
 
