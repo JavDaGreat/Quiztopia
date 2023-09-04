@@ -5,7 +5,7 @@ import {AiOutlinePlus} from "react-icons/ai"
 import { handleSignUp,handleLogin,handleCreateQuiz } from "./functions";
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { log } from "console";
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzNjh5MmZpeWxuIn0.Yk2H02NbIBK4P1Yl0zFtwA';
 
 
@@ -31,6 +31,8 @@ function LoginFrom() {
   const [markerLng, setmarkerLng] = useState<number>(12);
   const[question,setQuestion]=useState<string>("")
   const[answer,setAnswer]=useState<string>("")
+  const[openMyQuiz,setOpenMyQuiz]=useState<boolean>(false);
+  const[checkCreateQuestion,setCheckCreateQuestion]= useState<string>("")
   let Marker = new mapboxgl.Marker()
   
   async function geoLocation(){
@@ -101,6 +103,13 @@ function LoginFrom() {
       const data:any =await resp.json()
       console.log(data);
 
+      if(data.success){
+        setCheckCreateQuestion("Success")
+
+      }else{
+        setCheckCreateQuestion("Error")
+      }
+
 
     }
      
@@ -112,7 +121,8 @@ function LoginFrom() {
       </button>:
       <div className="flex gap-12">
       <button className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" onClick={()=>window.location.reload()}>Sign out</button>
-      <button onClick={() => setAddQuiz(true)} className="flex gap-2 m-1  justify-center items-center bg-slate-600 text-white p-2  rounded-md"><AiOutlinePlus/> <p>Add new Quiz</p></button>
+      <button onClick={() => setAddQuiz(true)} className="flex gap-2 m-1  justify-center items-center bg-slate-600 hover:bg-gray-950 text-white p-2  rounded-md"><AiOutlinePlus/> <p>Add new Quiz</p></button>
+      <button onClick={()=>setOpenMyQuiz(true)} className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" >My quiz</button>
       </div>
       
       }
@@ -160,45 +170,53 @@ function LoginFrom() {
         Quiz Name
       </label>
       <input className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight " id="QuizName" type="text" placeholder="My quiz" onChange={e=>setQuizName(e.target.value)}/>
-      {!checkQuizName ? undefined:<p className="text-red-500 text-xs italic m-1">Quiz name exist</p>}
+      {!checkQuizName ? <p className="text-green-500 text-xs italic m-1"> Quiz name Avalible</p>:<p className="text-red-500 text-xs italic m-1">Quiz name exist</p>}
 
      
     </div>
-    <button onClick={()=>handleCreateQuiz(token,quizName,setCheckQuizName)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  m-2" type="button">
+    <button onClick={()=>handleCreateQuiz(token,quizName,setCheckQuizName)} className="bg-gray-700 hover:bg-gray-950  text-white font-bold py-2 px-4 rounded  m-2" type="button">
        Check Avialiblity      
        </button>
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2 mt-1" htmlFor="Question">
         Question
       </label>
-      <input onChange={e=>setQuestion(e.target.value)} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="Question" type="text" placeholder="Here is the oldest church."/>
+      <input value={question} disabled ={checkQuizName} onChange={e=>setQuestion(e.target.value)} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="Question" type="text" placeholder="Here is the oldest church."/>
     </div>
 
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="Answer">
         Answer
       </label>
-      <input onChange={e=>setAnswer(e.target.value)} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="Answer" type="text" placeholder="Domkycrcka"/>
+      <input value={answer} disabled ={checkQuizName} onChange={e=>setAnswer(e.target.value)} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="Answer" type="text" placeholder="Domkycrcka"/>
     </div>
     
 
-    <p>Click to see the pin</p>
+    <p>Click to pin a location</p>
 
    
  <button onClick={handleMapShow}
- className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  m-2" type="button">
+ className="bg-gray-700 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded  m-2" type="button" disabled ={checkQuizName}>
 Show Map   </button>
 
 <div ref={mapContainer} className="map-container" />
 
   </form>
-  <button onClick={handleCreateQuestions} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  m-2" type="button">
+  <button onClick={handleCreateQuestions} className="bg-gray-700 hover:bg-gray-950 text-white font-bold py-2 px-4 rounded  m-2" type="button" disabled ={checkQuizName}>
 Submit       
 </button>
+<p className="text-green-500 italic text-md">{checkCreateQuestion}</p>
  
  
 </div>
    
+  </Modal>
+
+  <Modal open={openMyQuiz} onClose={()=>setOpenMyQuiz(false)} center>
+
+<div>
+  <h1>Hu</h1>
+</div>
   </Modal>
 
 

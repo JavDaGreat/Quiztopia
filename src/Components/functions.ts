@@ -1,3 +1,4 @@
+import { log } from "console"
 
 interface ApiResponse{
   message?:string,
@@ -43,6 +44,8 @@ const handleSignUp = async(username:string,password:string,setOpen,setMessage)=>
     }} 
 
     const handleCreateQuiz = async (token:string,quizName:string,setCheckQuiz)=>{
+      console.log(quizName);
+      
       
       
       
@@ -58,8 +61,12 @@ const handleSignUp = async(username:string,password:string,setOpen,setMessage)=>
 
       )
       const data:ApiResponse =await resp.json()
+      console.log(data);
+      
       if(!data.success){
         setCheckQuiz(true)
+      }else{
+        setCheckQuiz(false)
       }
       
 

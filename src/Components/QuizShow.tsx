@@ -6,7 +6,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzN
 
 
 import {BsChevronDown} from "react-icons/bs"
-import { log } from 'console';
 
 interface Question {
   question: string;
@@ -95,7 +94,6 @@ async function geoLocation(){
     })
 
 
-    //visa varje fråga i kartan 
 
     questions.forEach((q)=>{
       
@@ -105,7 +103,7 @@ async function geoLocation(){
       let marker= new mapboxgl.Marker().setLngLat([Number(q.location.longitude),Number(q.location.latitude)]).addTo(map).setPopup(
         new mapboxgl.Popup({ offset: 10 }) 
           .setHTML(
-            `<h2>${q.question} </h2><p>${q.answer}</p>`
+            `<h2 className="text-gray-400">${q.question} </h2><p> svar: ${q.answer}</p>`
           ))
 
     })
@@ -131,7 +129,7 @@ async function geoLocation(){
   return (
     <details className='p-4   bg-gray-200 max-w-lg mx-auto my-4'>
       <summary className='flex justify-between'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>  </summary>
-      <button className='bg-black text-white' onClick={handleMapShow}>Click me</button>
+      <button className='bg-gray-700 hover:bg-black p-1 m-1 rounded-md text-white' onClick={handleMapShow}>Show map</button>
       <div ref={mapContainer} className="map-container" />
 
 				<p> Center position: {lat} lat, {lng} lng </p>
