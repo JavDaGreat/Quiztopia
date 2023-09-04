@@ -1,4 +1,3 @@
-import { log } from "console"
 
 interface ApiResponse{
   message?:string,
@@ -10,7 +9,7 @@ interface ApiResponse{
 
 
 
-const handleSignUp = async(username:string,password:string,setOpen,setMessage)=>{
+const handleSignUp = async(username:string,password:string,setOpen:React.Dispatch<React.SetStateAction<boolean>>,setMessage)=>{
   const resp = await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/signup",{
     method:"POST",
     headers:{"Content-Type": "application/json"},

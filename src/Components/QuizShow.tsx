@@ -54,24 +54,10 @@ async function geoLocation(){
       
         fetchData();
       }, []);
-      
-      
 
-
-   
-
-
-  
-
-
- 
 
   const handleMapShow = async ()=>{
-    
 
-
-
-    //visa Map 
     if( mapRef.current || !mapContainer.current ) return
   
     mapRef.current = new MapGl({
