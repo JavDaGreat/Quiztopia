@@ -6,6 +6,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzN
 
 
 import {BsChevronDown} from "react-icons/bs"
+import { log } from 'console';
 
 interface Question {
   question: string;
@@ -71,7 +72,7 @@ async function geoLocation(){
 
 
 
-    
+    //visa Map 
     if( mapRef.current || !mapContainer.current ) return
   
     mapRef.current = new MapGl({
@@ -92,13 +93,24 @@ async function geoLocation(){
       setLng(Number(position.lng.toFixed(4)))
       setZoom(map.getZoom());
     })
-    const marker= new mapboxgl.Marker().setLngLat([ApiLat,ApiLng]).addTo(map).setPopup(
-      new mapboxgl.Popup({ offset: 10 }) // add popups
-        .setHTML(
-          `<h2>${question} </h2><p>${answer}</p>`
-        ))
 
-    
+
+    //visa varje fråga i kartan 
+
+    questions.forEach((q)=>{
+      
+      
+   
+      
+      let marker= new mapboxgl.Marker().setLngLat([Number(q.location.longitude),Number(q.location.latitude)]).addTo(map).setPopup(
+        new mapboxgl.Popup({ offset: 10 }) 
+          .setHTML(
+            `<h2>${q.question} </h2><p>${q.answer}</p>`
+          ))
+
+    })
+
+
   }
 
 
@@ -110,12 +122,7 @@ async function geoLocation(){
 
 
 
-  const content=questions.map((question)=>{
-    return <div>
-      <p className='hover:cursor-pointer' onClick={handleMapShow}>{question.question}</p>
-    </div>
-  
-  })
+ 
 
 
   
@@ -124,7 +131,7 @@ async function geoLocation(){
   return (
     <details className='p-4   bg-gray-200 max-w-lg mx-auto my-4'>
       <summary className='flex justify-between'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>  </summary>
-      {content}
+      <button className='bg-black text-white' onClick={handleMapShow}>Click me</button>
       <div ref={mapContainer} className="map-container" />
 
 				<p> Center position: {lat} lat, {lng} lng </p>

@@ -5,6 +5,7 @@ import {AiOutlinePlus} from "react-icons/ai"
 import { handleSignUp,handleLogin,handleCreateQuiz } from "./functions";
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { log } from "console";
 mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzNjh5MmZpeWxuIn0.Yk2H02NbIBK4P1Yl0zFtwA';
 
 
@@ -26,13 +27,12 @@ function LoginFrom() {
   const [lng, setLng] = useState<number>(10);
   const [lat, setLat] = useState<number>(20);
   const [zoom, setZoom] = useState<number>(5);
-  const [markerLat, setMarkerLat] = useState<number>(12);
-  const [markerLng, setmarkerLng] = useState<number>(57);
+  const [markerLat, setMarkerLat] = useState<number>(57);
+  const [markerLng, setmarkerLng] = useState<number>(12);
   const[question,setQuestion]=useState<string>("")
   const[answer,setAnswer]=useState<string>("")
-
-
-
+  let Marker = new mapboxgl.Marker()
+  
   async function geoLocation(){
 
     return new Promise((resolve,reject)=>{
@@ -52,6 +52,7 @@ function LoginFrom() {
           fetchData();
         }, []);
 
+
         const handleMapShow = async ()=>{
          
           if( !mapContainer.current ) return
@@ -64,37 +65,18 @@ function LoginFrom() {
             zoom: zoom
           });
           const map: MapGl = mapRef.current
-        
-          map.on('move', () => {
-            interface Position {
-              lng: number;
-              lat: number;
-            }
-            const position: Position = map.getCenter()
-            setLat(Number(position.lat.toFixed(4)))
-            setLng(Number(position.lng.toFixed(4)))
-            setZoom(map.getZoom());
-           
+          function add_marker (event:any) {
+            var coordinates = event.lngLat;
+            setMarkerLat(coordinates.lat)
+            setmarkerLng(coordinates.lng)
+            console.log('Lng:', coordinates.lng, 'Lat:', coordinates.lat);
             
-         
-          })
-          const marker= new mapboxgl.Marker().setLngLat([markerLat,markerLng]).addTo(map).setPopup(
-            new mapboxgl.Popup({ offset: 10 }) // add popups
-              .setHTML(
-                `<h2>${question} </h2><p>${answer}</p>`
-              ))
-          
-      
-          
+            Marker.setLngLat(coordinates).addTo(map).setPopup(new mapboxgl.Popup({offset:10}).setHTML(`<h2>${question} </h2><p>${answer}</p>`))
+          }
+          map.on('click', add_marker);
+
         }
-        console.log(question);
-        
-        
-
-
- 
-
-    
+  
     const handleCreateQuestions=async()=>{
       const resp = await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/question",{
         method:"POST",
@@ -198,17 +180,7 @@ function LoginFrom() {
       </label>
       <input onChange={e=>setAnswer(e.target.value)} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="Answer" type="text" placeholder="Domkycrcka"/>
     </div>
-    <div className="mb-6">
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lat">
-      latitude
-
-      </label>
-      <input onChange={e=>setMarkerLat(Number(e.target.value))} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="lat" type="number" placeholder="12"/>
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lng">
-        longitude
-      </label>
-      <input onChange={e=>setmarkerLng(Number(e.target.value))} className="shadow border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight " id="lng" type="text" placeholder="57"/>
-    </div>
+    
 
     <p>Click to see the pin</p>
 
@@ -218,10 +190,7 @@ function LoginFrom() {
 Show Map   </button>
 
 <div ref={mapContainer} className="map-container" />
-<p> Center position: {lat} lat, {lng} lng </p>
 
-       
-   
   </form>
   <button onClick={handleCreateQuestions} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded  m-2" type="button">
 Submit       

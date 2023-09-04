@@ -38,7 +38,6 @@ const fetchQuizList = async()=>{
 
 
 const content = quizes?.map((quiz)=>{
-  console.log(quiz);
   
   
   return <QuizShow name={quiz.quizId} username={quiz.username} questions={quiz.questions}/>
