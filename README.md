@@ -1,4 +1,5 @@
-# React + TypeScript + Vite
+# Quiztopia (TypeScript + React )
+
 
  ## Funktionalitet
 * Det går att skapa konto och logga in.
@@ -8,3 +9,5 @@
 * Det går att se alla quiz, vad quiz:et heter samt vem som skapat det.
 * Det går att välja ett quiz och se alla frågor på kartan.
 * Det ska enbart behövas loggas in för skapa quiz och lägga till frågor.
+* Kunna ta bort ett quiz som man själv skapat.
+
