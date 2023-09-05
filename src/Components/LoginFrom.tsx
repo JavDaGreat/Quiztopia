@@ -5,7 +5,31 @@ import {AiOutlinePlus} from "react-icons/ai"
 import { handleSignUp,handleLogin,handleCreateQuiz } from "./functions";
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import QuizShow from "./QuizShow";
 //userId= uzh3YqWIF1dB6bPvCHaAd
+interface Location {
+  longitude: string;
+  latitude: string;
+}
+
+interface Question {
+  question: string;
+  answer: string;
+  location: Location;
+}
+
+interface Quiz {
+  questions: Question[];
+  username: string;
+  quizId: string;
+  userId: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  quizzes: Quiz[];
+}
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzNjh5MmZpeWxuIn0.Yk2H02NbIBK4P1Yl0zFtwA';
 
@@ -34,6 +58,8 @@ function LoginFrom() {
   const[answer,setAnswer]=useState<string>("")
   const[openMyQuiz,setOpenMyQuiz]=useState<boolean>(false);
   const[checkCreateQuestion,setCheckCreateQuestion]= useState<string>("")
+  const[Quizes,setQuizes]=useState<Quiz[] |undefined>(undefined)
+  const CanBeDeleted :boolean=true
   let Marker = new mapboxgl.Marker()
   
   async function geoLocation(){
@@ -114,13 +140,37 @@ function LoginFrom() {
 
     }
 
-  const handleteest = async ()=>{
-    const resp = await fetch ('https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/uzh3YqWIF1dB6bPvCHaAd/test007')
-    const data =await resp.json()
+  
+
+
+  const fetchQuizList = async()=>{
+    const resp=await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz")
+    const data:ApiResponse= await resp.json()
     console.log(data);
     
-
+    setQuizes(data.quizzes)
+    
+    
+  
   }
+   const handleShowMyQuiz= async ()=>{
+    setOpenMyQuiz(true)
+     await fetchQuizList()
+
+   }
+   const content = Quizes?.filter((quiz) => quiz.username === displayName)
+   .map((filteredQuiz) => (
+   
+     <QuizShow
+       name={filteredQuiz.quizId}
+       username={filteredQuiz.username}
+       questions={filteredQuiz.questions}
+       CanBeDeleted={CanBeDeleted}
+       token={token}
+       fetchQuiz={fetchQuizList}
+
+     />
+   ));
      
   return (
 
@@ -133,7 +183,7 @@ function LoginFrom() {
       <div className="flex gap-12">
       <button className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" onClick={()=>window.location.reload()}>Sign out</button>
       <button onClick={() => setAddQuiz(true)} className="flex gap-2 m-1  justify-center items-center bg-slate-600 hover:bg-gray-950 text-white p-2  rounded-md"><AiOutlinePlus/> <p>Add new Quiz</p></button>
-      <button onClick={()=>setOpenMyQuiz(true)} className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" >My quiz</button>
+      <button onClick={handleShowMyQuiz} className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" >My quiz</button>
       </div>
       
       }
@@ -228,9 +278,7 @@ Submit
 
   <Modal open={openMyQuiz} onClose={()=>setOpenMyQuiz(false)} center>
 
-<div>
-  <h1 className="m-3 p-4" onClick={handleteest}>Huaaaaaaaa</h1>
-</div>
+ {content}
   </Modal>
 
 

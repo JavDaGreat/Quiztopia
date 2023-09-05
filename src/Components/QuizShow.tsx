@@ -6,6 +6,12 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzN
 
 
 import {BsChevronDown} from "react-icons/bs"
+interface ApiResponse{
+  message?:string,
+  success:boolean,
+  token?:string
+  quizId?:string
+}
 
 interface Question {
   question: string;
@@ -22,13 +28,16 @@ interface QuizShowProps {
   name: string;
   username: string;
   questions: Question[]
+  CanBeDeleted:boolean
+  token:string
+  fetchQuiz:any
 
 }
 
 
 
 
-function QuizShow({name,username,questions}:QuizShowProps) {
+function QuizShow({name,username,questions,CanBeDeleted,token,fetchQuiz}:QuizShowProps) {
   const mapContainer = useRef(null);
 const mapRef = useRef<MapGl | null>(null);
 const [lng, setLng] = useState<number>(10);
@@ -69,6 +78,9 @@ async function geoLocation(){
     const map: MapGl = mapRef.current
   
     questions.forEach((q)=>{
+      if (isNaN (Number(q.location.longitude))) {
+        return
+      } else{
     
       let marker= new mapboxgl.Marker().setLngLat([Number(q.location.longitude),Number(q.location.latitude)]).addTo(map).setPopup(
         new mapboxgl.Popup({ offset: 10 }) 
@@ -76,10 +88,22 @@ async function geoLocation(){
             `<h2>${q.question} </h2><p> svar: ${q.answer}</p>`
           ))
 
-    })
+   } })
 
 
   }
+  const handleDelete = async()=>{
+ 
+  const resp = await fetch(`https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/${name}`,{
+    method:"DELETE",
+    headers:{Authorization: `Bearer ${token}`},
+    
+  }
+  )
+  const data:ApiResponse=await resp.json()
+  fetchQuiz()
+
+}
 
 
 
@@ -98,9 +122,10 @@ async function geoLocation(){
 
   return (
     <details className='p-4   bg-gray-200 max-w-lg mx-auto my-4'>
-      <summary className='flex justify-between'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>  </summary>
+      <summary className='flex justify-between items-center'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>      {CanBeDeleted && <button onClick={handleDelete} className='bg-red-600 hover:bg-red-700 p-2 mx-4 my-1 rounded-md text-white'>Delete</button>}     
+  </summary>
       <button className='bg-gray-700 hover:bg-black p-1 m-1 rounded-md text-white' onClick={handleMapShow}>Show map</button>
-      <div ref={mapContainer} className="map-container" />
+       <div ref={mapContainer} className="map-container" />
 
 				<p> Center position: {lat} lat, {lng} lng </p>
 

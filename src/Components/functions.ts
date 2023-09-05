@@ -35,7 +35,7 @@ const handleSignUp = async(username:string,password:string,setOpen:React.Dispatc
     if(data.success === true){
       setOpen(false)
       setMessage("")
-      setDisplayName(`Hi,${username}`)
+      setDisplayName(username)
       if (!data.token) return 
       setToken(data.token)
     } else{
