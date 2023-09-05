@@ -5,6 +5,7 @@ import {AiOutlinePlus} from "react-icons/ai"
 import { handleSignUp,handleLogin,handleCreateQuiz } from "./functions";
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
+//userId= uzh3YqWIF1dB6bPvCHaAd
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiamF2ZGFncmVhdCIsImEiOiJjbGx6ZmYzajAxMG9rM2RzNjh5MmZpeWxuIn0.Yk2H02NbIBK4P1Yl0zFtwA';
 
@@ -112,8 +113,18 @@ function LoginFrom() {
 
 
     }
+
+  const handleteest = async ()=>{
+    const resp = await fetch ('https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/uzh3YqWIF1dB6bPvCHaAd/test007')
+    const data =await resp.json()
+    console.log(data);
+    
+
+  }
      
   return (
+
+    
 
     <div>
       {!displayName ?<button className="bg-gray-700 hover:bg-gray-950 text-white w-24 p-2 m-1 rounded-md" onClick={() => setOpen(true)}>
@@ -218,7 +229,7 @@ Submit
   <Modal open={openMyQuiz} onClose={()=>setOpenMyQuiz(false)} center>
 
 <div>
-  <h1>Hu</h1>
+  <h1 className="m-3 p-4" onClick={handleteest}>Huaaaaaaaa</h1>
 </div>
   </Modal>
 

@@ -9,7 +9,7 @@ interface ApiResponse{
 
 
 
-const handleSignUp = async(username:string,password:string,setOpen:React.Dispatch<React.SetStateAction<boolean>>,setMessage)=>{
+const handleSignUp = async(username:string,password:string,setOpen:React.Dispatch<React.SetStateAction<boolean>>,setMessage:React.Dispatch<React.SetStateAction<string>>)=>{
   const resp = await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/signup",{
     method:"POST",
     headers:{"Content-Type": "application/json"},
@@ -24,7 +24,7 @@ const handleSignUp = async(username:string,password:string,setOpen:React.Dispatc
     setMessage("User already exist")
   } }
 
-  const handleLogin =async(username,password,setOpen,setMessage,setToken,setDisplayName)=>{
+  const handleLogin =async(username:string,password:string,setOpen:React.Dispatch<React.SetStateAction<boolean>>,setMessage:React.Dispatch<React.SetStateAction<string>>,setToken:React.Dispatch<React.SetStateAction<string>>,setDisplayName:React.Dispatch<React.SetStateAction<string>>)=>{
     const resp= await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/auth/login",{
       method:"POST",
       headers:{"Content-Type": "application/json"},
@@ -42,7 +42,7 @@ const handleSignUp = async(username:string,password:string,setOpen:React.Dispatc
       setMessage("Password or username not valid")
     }} 
 
-    const handleCreateQuiz = async (token:string,quizName:string,setCheckQuiz)=>{
+    const handleCreateQuiz = async (token:string,quizName:string,setCheckQuiz:React.Dispatch<React.SetStateAction<boolean>>)=>{
       console.log(quizName);
       
       
@@ -71,27 +71,5 @@ const handleSignUp = async(username:string,password:string,setOpen:React.Dispatc
 
 
     }
-    const handleCreateQuestions=async()=>{
-      const resp = await fetch("https://fk7zu3f4gj.execute-api.eu-north-1.amazonaws.com/quiz/question",{
-        method:"POST",
-        headers:{Authorization: `Bearer ${token}`},
-        body: JSON.stringify({
-          name: "test007",
-          question: "string",
-          answer: "string",
-          location: {
-            longitude: "string",
-            latitude: "string"
-          }
-        })
-        
-      }
-
-      )
-      const data:any =await resp.json()
-      console.log(data);
-
-
-    }
-
-export{handleLogin,handleSignUp,handleCreateQuiz,handleCreateQuestions}
+  
+export{handleLogin,handleSignUp,handleCreateQuiz}

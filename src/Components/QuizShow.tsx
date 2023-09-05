@@ -56,7 +56,7 @@ async function geoLocation(){
       }, []);
 
 
-  const handleMapShow = async ()=>{
+  const handleMapShow = ()=>{
 
     if( mapRef.current || !mapContainer.current ) return
   
@@ -68,28 +68,12 @@ async function geoLocation(){
     });
     const map: MapGl = mapRef.current
   
-    map.on('move', () => {
-      interface Position {
-        lng: number;
-        lat: number;
-      }
-      const position: Position = map.getCenter()
-      setLat(Number(position.lat.toFixed(4)))
-      setLng(Number(position.lng.toFixed(4)))
-      setZoom(map.getZoom());
-    })
-
-
-
     questions.forEach((q)=>{
-      
-      
-   
-      
+    
       let marker= new mapboxgl.Marker().setLngLat([Number(q.location.longitude),Number(q.location.latitude)]).addTo(map).setPopup(
         new mapboxgl.Popup({ offset: 10 }) 
           .setHTML(
-            `<h2 className="text-gray-400">${q.question} </h2><p> svar: ${q.answer}</p>`
+            `<h2>${q.question} </h2><p> svar: ${q.answer}</p>`
           ))
 
     })
