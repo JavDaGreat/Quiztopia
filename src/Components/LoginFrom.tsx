@@ -59,6 +59,7 @@ function LoginFrom() {
   const[openMyQuiz,setOpenMyQuiz]=useState<boolean>(false);
   const[checkCreateQuestion,setCheckCreateQuestion]= useState<string>("")
   const[Quizes,setQuizes]=useState<Quiz[] |undefined>(undefined)
+  const[edit,setEdit]=useState<boolean>(false)
   const CanBeDeleted :boolean=true
   let Marker = new mapboxgl.Marker()
   
@@ -168,6 +169,9 @@ function LoginFrom() {
        CanBeDeleted={CanBeDeleted}
        token={token}
        fetchQuiz={fetchQuizList}
+       setAddQuiz={setAddQuiz}
+       setEdit={setEdit}
+       setQuizName={setQuizName}
 
      />
    ));
@@ -229,18 +233,18 @@ function LoginFrom() {
         }}   center>
   <div className="w-full max-w-xs">
   <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    <div className="mb-4">
+   {!edit ? <div className="mb-4">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="QuizName">
         Quiz Name
       </label>
       <input className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight " id="QuizName" type="text" placeholder="My quiz" onChange={e=>setQuizName(e.target.value)}/>
       {!checkQuizName ? <p className="text-green-500 text-xs italic m-1"> Quiz name Avalible</p>:<p className="text-red-500 text-xs italic m-1">Quiz name exist</p>}
 
-     
-    </div>
-    <button onClick={()=>handleCreateQuiz(token,quizName,setCheckQuizName)} className="bg-gray-700 hover:bg-gray-950  text-white font-bold py-2 px-4 rounded  m-2" type="button">
+      <button onClick={()=>handleCreateQuiz(token,quizName,setCheckQuizName)} className="bg-gray-700 hover:bg-gray-950  text-white font-bold py-2 px-4 rounded  m-2" type="button">
        Check Avialiblity      
        </button>
+    </div>:undefined}
+  
     <div className="mb-6">
       <label className="block text-gray-700 text-sm font-bold mb-2 mt-1" htmlFor="Question">
         Question
