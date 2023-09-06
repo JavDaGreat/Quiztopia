@@ -126,7 +126,7 @@ async function geoLocation(){
 
   return (
     <details className='p-4   bg-gray-200 max-w-lg mx-auto my-4'>
-      <summary className='flex justify-between items-center'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>      {CanBeDeleted && <div><button onClick={handleDelete} className='bg-red-600 hover:bg-red-700 p-2 mx-4 my-1 rounded-md text-white'>Delete</button><button onClick={()=>{setAddQuiz(true),setEdit(true)}}>Edit</button></div>}     
+      <summary className='flex justify-between items-center'><BsChevronDown className="hover:cursor-pointer" /> <span> quiz Name :&nbsp;{name}</span> <span> By&nbsp;:&nbsp;{username} </span>      {CanBeDeleted && <div><button onClick={handleDelete} className='bg-red-600 hover:bg-red-700 p-2 mx-4 my-1 rounded-md text-white'>Delete</button><button onClick={()=>{setAddQuiz(true),setEdit(true)}}>Add Question</button></div>}     
   </summary>
       <button className='bg-gray-700 hover:bg-black p-1 m-1 rounded-md text-white' onClick={handleMapShow}>Show map</button>
        <div ref={mapContainer} className="map-container" />
