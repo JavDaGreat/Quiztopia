@@ -6,7 +6,6 @@ import { handleSignUp,handleLogin,handleCreateQuiz } from "./functions";
 import mapboxgl,{Map as MapGl} from "mapbox-gl" 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import QuizShow from "./QuizShow";
-//userId= uzh3YqWIF1dB6bPvCHaAd
 interface Location {
   longitude: string;
   latitude: string;
@@ -172,6 +171,7 @@ function LoginFrom() {
        setAddQuiz={setAddQuiz}
        setEdit={setEdit}
        setQuizName={setQuizName}
+       key={`${filteredQuiz.quizId}-${filteredQuiz.username}`}
 
      />
    ));
