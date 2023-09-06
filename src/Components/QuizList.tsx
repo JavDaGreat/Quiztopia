@@ -42,7 +42,9 @@ const fetchQuizList = async()=>{
 const content = quizes?.map((quiz)=>{
   
   
-  return <QuizShow name={quiz.quizId} username={quiz.username} questions={quiz.questions}  CanBeDeleted={CanBeDeleted} token='' fetchQuiz=""
+  return <QuizShow name={quiz.quizId} username={quiz.username} questions={quiz.questions}  CanBeDeleted={CanBeDeleted} token='' fetchQuiz="" 
+  
+  setAddQuiz ={undefined} setEdit ={undefined} setQuizName ={undefined}
   />
 })
 
