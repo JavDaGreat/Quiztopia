@@ -31,7 +31,7 @@ const handleSignUp = async(username:string,password:string,setOpen:React.Dispatc
       body:JSON.stringify({username,password})
     })
     const data:ApiResponse = await resp.json()
-    console.log(data);
+ 
     if(data.success === true){
       setOpen(false)
       setMessage("")

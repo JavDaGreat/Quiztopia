@@ -47,10 +47,7 @@ const mapRef = useRef<MapGl | null>(null);
 const [lng, setLng] = useState<number>(10);
 const [lat, setLat] = useState<number>(20);
 const [zoom, setZoom] = useState<number>(9);
-if(setQuizName){
-  setQuizName(name)
 
-}
 
 
 async function geoLocation(){
@@ -73,7 +70,8 @@ async function geoLocation(){
       }, []);
 
 
-  const handleMapShow = ()=>{
+  const handleMapShow = async ()=>{
+    
 
     if( mapRef.current || !mapContainer.current ) return
   
@@ -114,8 +112,12 @@ async function geoLocation(){
 }
 
 const handleAddquestion =()=>{
-  if(setAddQuiz && setEdit)
+  if(setAddQuiz && setEdit && setQuizName)
   setAddQuiz(true),setEdit(true)
+if(setQuizName){
+  setQuizName(name)
+}
+
 
 }
 

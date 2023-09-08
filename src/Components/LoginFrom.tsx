@@ -45,7 +45,7 @@ function LoginFrom() {
   const[displayName,setDisplayName]= useState<string>("")
   const[addquiz,setAddQuiz] =useState<boolean>(false); 
   const[quizName,setQuizName]=useState<string>("")
-  const[checkQuizName,setCheckQuizName] =useState<boolean>(false);
+  const[checkQuizName,setCheckQuizName] =useState<boolean>(true);
   const mapContainer = useRef(null);
   const mapRef = useRef<MapGl | null>(null);
   const [lng, setLng] = useState<number>(10);
@@ -227,7 +227,7 @@ function LoginFrom() {
    
   
   </Modal>
-  <Modal open={addquiz} onClose={() => {setAddQuiz(false),setCheckQuizName(false)} }  classNames={{
+  <Modal open={addquiz} onClose={() => {setAddQuiz(false),setCheckQuizName(false),setEdit(false)} }  classNames={{
           
           modal: 'customModal',
         }}   center>
@@ -238,7 +238,7 @@ function LoginFrom() {
         Quiz Name
       </label>
       <input className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight " id="QuizName" type="text" placeholder="My quiz" onChange={e=>setQuizName(e.target.value)}/>
-      {!checkQuizName ? <p className="text-green-500 text-xs italic m-1"> Quiz name Avalible</p>:<p className="text-red-500 text-xs italic m-1">Quiz name exist</p>}
+      {!checkQuizName ? <p className="text-green-500 text-xs italic m-1"> Quiz name Avalible</p>:undefined}
 
       <button onClick={()=>handleCreateQuiz(token,quizName,setCheckQuizName)} className="bg-gray-700 hover:bg-gray-950  text-white font-bold py-2 px-4 rounded  m-2" type="button">
        Check Avialiblity      
