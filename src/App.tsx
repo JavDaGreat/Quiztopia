@@ -1,24 +1,20 @@
-import { useState } from 'react'
-
-import LoginFrom from './Components/LoginFrom'
-import QuizList from './Components/QuizList'
+import LoginFrom from "./Components/LoginFrom";
+import QuizList from "./Components/QuizList";
 
 function App() {
-
   return (
     <div>
       <header>
-      <LoginFrom/>
-      <h1 className='font-bold text-lg p-2 m-2 text-center'>Welcome to Quiztopia</h1>
+        <LoginFrom />
+        <h1 className="font-bold text-lg p-2 m-2 text-center">
+          Welcome to Quiztopia
+        </h1>
       </header>
       <main>
-        <QuizList/>
+        <QuizList />
       </main>
-    
-
     </div>
- 
-  )
+  );
 }
 
-export default App
+export default App;
